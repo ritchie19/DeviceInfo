@@ -1,19 +1,10 @@
 package com.quixom.apps.deviceinfo;
 
 import android.annotation.SuppressLint;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -21,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.quixom.apps.deviceinfo.fragments.AboutUsFragment;
 import com.quixom.apps.deviceinfo.fragments.AppsFragment;
 import com.quixom.apps.deviceinfo.fragments.BatteryFragment;
@@ -35,16 +27,21 @@ import com.quixom.apps.deviceinfo.fragments.PhoneFeaturesFragment;
 import com.quixom.apps.deviceinfo.fragments.SensorCategoryFragment;
 import com.quixom.apps.deviceinfo.fragments.SimFragment;
 import com.quixom.apps.deviceinfo.fragments.StorageFragment;
-import com.quixom.apps.deviceinfo.models.DeviceInfo;
 import com.quixom.apps.deviceinfo.utilities.BaseActivity;
 import com.quixom.apps.deviceinfo.utilities.FragmentUtil;
 import com.quixom.apps.deviceinfo.utilities.KeyUtil;
 import com.quixom.apps.deviceinfo.utilities.Methods;
 import com.quixom.apps.deviceinfo.utilities.RateUsApp;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -81,7 +78,7 @@ public class MainActivity extends BaseActivity {
         setUpNavigationView();
         drawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
 
-        getAppsList();
+//        getAppsList();
         fragmentUtil.clearBackStackFragmets();
         fragmentUtil.replaceFragment(new HomeFragment(), false, true);
 
@@ -106,11 +103,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
             return;
         }
+        super.onBackPressed();
     }
 
     /**
@@ -138,16 +135,11 @@ public class MainActivity extends BaseActivity {
         tvDeviceName.setText("".concat(Build.BRAND));
         tvModelNumber.setText("".concat(Build.MODEL));
 
-        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-            // This method will trigger on item Click of navigation menu
             @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
+            public boolean onNavigationItemSelected(@NotNull MenuItem menuItem) {
 
-                //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.nav_device:
                         navItemIndex = 0;
                         break;
@@ -314,10 +306,13 @@ public class MainActivity extends BaseActivity {
                 Fragment fragment = getFragmentFromDrawer();
                 if (fragment != null) {
                     fragmentUtil.clearBackStackFragmets();
-                    fragmentUtil.replaceFragment(fragment, false, true);
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.fragment_container, fragment).commit();
+//                    fragmentUtil.replaceFragment(fragment, false, true);
                 }
             }
-        }, 300);
+        }, 100);
 
         // refresh toolbar menu
         invalidateOptionsMenu();
@@ -404,32 +399,5 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Method for get System installed and User installed apps
-     * from the device.
-     *
-     * @return list of apps
-     */
 
-    public List<DeviceInfo> getAppsList() {
-        List<DeviceInfo> deviceInfos = new ArrayList<>();
-
-        int flags = PackageManager.GET_META_DATA | PackageManager.GET_SHARED_LIBRARY_FILES;
-
-        PackageManager pm = getPackageManager();
-        List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
-
-        for (ApplicationInfo appInfo : applications) {
-            if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
-                // System application
-                Drawable icon = pm.getApplicationIcon(appInfo);
-                deviceInfos.add(new DeviceInfo(1, icon, pm.getApplicationLabel(appInfo).toString(), appInfo.packageName));
-            } else {
-                // Installed by User
-                Drawable icon = pm.getApplicationIcon(appInfo);
-                deviceInfos.add(new DeviceInfo(2, icon, pm.getApplicationLabel(appInfo).toString(), appInfo.packageName));
-            }
-        }
-        return deviceInfos;
-    }
 }

@@ -1,16 +1,20 @@
 package com.quixom.apps.deviceinfo.fragments
 
+import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.quixom.apps.deviceinfo.R
 import com.quixom.apps.deviceinfo.adapters.DeviceAdapter
 import com.quixom.apps.deviceinfo.models.DeviceInfo
@@ -18,11 +22,12 @@ import com.quixom.apps.deviceinfo.utilities.KeyUtil
 
 class AppsFragment : BaseFragment() {
 
-    var ivMenu: ImageView? = null
-    var ivBackArrow: ImageView? = null
+    private var ivMenu: ImageView? = null
+    private var ivBackArrow: ImageView? = null
     var tvTitle: TextView? = null
     var rvAppsList: RecyclerView? = null
-    var coordinateLayout: CoordinatorLayout? = null
+    private var coordinatorLayout: CoordinatorLayout? = null
+    private var appsTask : AppsTask? = null
 
     var mode: Int? = 0
 
@@ -47,14 +52,13 @@ class AppsFragment : BaseFragment() {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = resources.getColor(R.color.dark_parrot_green_blue)
             window . navigationBarColor = resources . getColor (R.color.dark_parrot_green_blue)
-
         }
 
         ivMenu = view.findViewById(R.id.iv_menu)
         ivBackArrow = view.findViewById(R.id.iv_back)
         tvTitle = view.findViewById(R.id.tv_title)
         rvAppsList = view.findViewById(R.id.rv_apps_list)
-        coordinateLayout = view.findViewById(R.id.coordinatorLayout)
+        coordinatorLayout = view.findViewById(R.id.coordinatorLayout)
 
         return view
     }
@@ -65,7 +69,17 @@ class AppsFragment : BaseFragment() {
         initToolbar()
         rvAppsList?.layoutManager = LinearLayoutManager(mActivity)
         rvAppsList?.hasFixedSize()
-        initAppsList()
+        val task = AppsTask(mode == 1)
+        task.listener = {
+            initAppsList(it)
+        }
+        task.execute(context)
+        appsTask = task
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        appsTask?.listener = null
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -101,19 +115,14 @@ class AppsFragment : BaseFragment() {
         }
     }
 
-    private fun initAppsList() {
-
-        val lists = ArrayList<DeviceInfo>()
-        mActivity.appsList?.filterTo(lists) { it.flags == mode }
-
+    private fun initAppsList(apps : List<DeviceInfo>) {
         //creating our adapter
-        val adapter = DeviceAdapter(mode, lists, mActivity)
+        val adapter = DeviceAdapter(apps, mActivity)
 
         if (mode == KeyUtil.IS_USER_COME_FROM_USER_APPS) {
-            snackBarCustom(coordinateLayout!!, lists.size.toString() + " " + mResources.getString(R.string.user_apps))
+            snackBarCustom(coordinatorLayout!!, apps.size.toString() + " " + mResources.getString(R.string.user_apps))
         } else {
-            snackBarCustom(coordinateLayout!!, lists.size.toString() + " " + mResources.getString(R.string.system_apps))
-
+            snackBarCustom(coordinatorLayout!!, apps.size.toString() + " " + mResources.getString(R.string.system_apps))
         }
         //now adding the adapter to RecyclerView
         rvAppsList?.adapter = adapter
@@ -128,7 +137,7 @@ class AppsFragment : BaseFragment() {
     private fun snackBarCustom(view: View, message: String) {
         val mSnackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
         val view: View? = mSnackBar.view
-        val mainTextView = mSnackBar.view.findViewById<View>(android.support.design.R.id.snackbar_text) as TextView
+        val mainTextView = mSnackBar.view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             mainTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         else
@@ -136,8 +145,38 @@ class AppsFragment : BaseFragment() {
         mainTextView.gravity = Gravity.CENTER_HORIZONTAL
         mainTextView.setTextColor(Color.WHITE)
         view?.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.app_snackbar_color))
-
-
         mSnackBar.show()
+    }
+
+    class AppsTask(private val system: Boolean) : AsyncTask<Context, Void, List<DeviceInfo>>() {
+        var listener: ((List<DeviceInfo>) -> Unit)? = null
+
+        private fun  getAppsList(context : Context, system : Boolean) : List<DeviceInfo> {
+            val list = ArrayList<DeviceInfo>();
+            val flags = PackageManager.GET_META_DATA.or(PackageManager.GET_SHARED_LIBRARY_FILES);
+
+            val pm : PackageManager = context.packageManager;
+            val applications : List<ApplicationInfo> = pm.getInstalledApplications(flags);
+
+            for (ai in applications) {
+                val name: String = pm.getApplicationLabel(ai).toString();
+                val isSystem: Boolean = ai.flags.and(ApplicationInfo.FLAG_SYSTEM) == 1;
+
+                val di = DeviceInfo(name, ai);
+                if (isSystem == system) {
+                    list.add(di)
+                }
+            }
+            return list;
+        }
+
+        override fun doInBackground(vararg params: Context?): List<DeviceInfo> {
+            return getAppsList(params[0]!!, system);
+        }
+
+        override fun onPostExecute(result: List<DeviceInfo>?) {
+            listener?.invoke(result!!)
+        }
+
     }
 }

@@ -9,8 +9,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.IBinder
-import android.support.annotation.Nullable
 import android.widget.RemoteViews
+import androidx.annotation.Nullable
 import com.quixom.apps.deviceinfo.R
 import com.quixom.apps.deviceinfo.Widget.MyWidgetProvider
 import com.quixom.apps.deviceinfo.utilities.Methods

@@ -14,13 +14,12 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
+        tools:targetApi="lollipop"
         android:layout_marginTop="5dp"
         airbnb:lottie_autoPlay="true"
-        airbnb:lottie_cacheStrategy="strong"
         airbnb:lottie_enableMergePathsForKitKatAndAbove="true"
         airbnb:lottie_fileName="camera_anim.json"
-        airbnb:lottie_loop="true"
-        tools:targetApi="lollipop" />
+        airbnb:lottie_loop="true"/>
 
     <LinearLayout
         android:id="@+id/ll_parent_camera"
@@ -59,17 +58,17 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
         custom:cardUseCompatPadding="true">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_Camera_Features"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <ScrollView
         android:id="@+id/textAreaScroller"

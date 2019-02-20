@@ -7,14 +7,14 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
-import android.support.v4.app.ActivityCompat
-import android.support.v7.widget.LinearLayoutManager
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import android.telephony.gsm.GsmCellLocation
 import android.view.*
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.quixom.apps.deviceinfo.MainActivity
 import com.quixom.apps.deviceinfo.R
 import com.quixom.apps.deviceinfo.adapters.SimAdapter
@@ -226,7 +226,7 @@ class SimFragment : BaseFragment() {
             6 -> "NOT_READY"
             7 -> "PERM_DISABLED"
             8 -> "CARD_IO_ERROR"
-            else -> "??? " + simState
+            else -> "??? $simState"
         }
     }
 

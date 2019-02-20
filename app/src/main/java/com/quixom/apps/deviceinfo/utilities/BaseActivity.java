@@ -3,9 +3,10 @@ package com.quixom.apps.deviceinfo.utilities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 
 import com.quixom.apps.deviceinfo.R;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by quixomtech on 5/2/18.
@@ -30,13 +31,13 @@ public class BaseActivity extends AppCompatActivity {
      * Overrides the pending Activity transition by performing the "Enter" animation.
      */
     protected void overridePendingTransitionEnter() {
-        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
     /**
      * Overrides the pending Activity transition by performing the "Exit" animation.
      */
     protected void overridePendingTransitionExit() {
-        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 }

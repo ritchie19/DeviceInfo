@@ -5,11 +5,11 @@ import android.annotation.TargetApi
 import android.app.ActivityManager
 import android.content.Context
 import android.os.*
-import android.support.v4.content.ContextCompat
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.github.lzyzsd.circleprogress.DonutProgress
 import com.quixom.apps.deviceinfo.R
 import com.quixom.apps.deviceinfo.utilities.Methods
@@ -52,7 +52,6 @@ class StorageFragment : BaseFragment() {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = resources.getColor(R.color.dark_red)
             window.navigationBarColor = resources.getColor(R.color.dark_red)
-
         }
 
         ivMenu = view.findViewById(R.id.iv_menu)

@@ -3,13 +3,14 @@ package com.quixom.apps.deviceinfo.fragments;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.quixom.apps.deviceinfo.MainActivity;
 import com.quixom.apps.deviceinfo.utilities.FragmentUtil;
 import com.quixom.apps.deviceinfo.utilities.Methods;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 public class BaseFragment extends Fragment {
 

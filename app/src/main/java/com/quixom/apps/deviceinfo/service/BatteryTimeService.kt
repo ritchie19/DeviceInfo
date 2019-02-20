@@ -7,7 +7,7 @@ import android.content.IntentFilter
 
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.support.annotation.Nullable
+import androidx.annotation.Nullable
 import com.quixom.apps.deviceinfo.utilities.BatteryStats
 import java.util.concurrent.TimeUnit
 

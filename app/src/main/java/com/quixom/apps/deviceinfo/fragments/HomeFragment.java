@@ -6,9 +6,6 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -22,6 +19,9 @@ import android.widget.TextView;
 import com.quixom.apps.deviceinfo.R;
 import com.quixom.apps.deviceinfo.utilities.KeyUtil;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -83,7 +83,6 @@ public class HomeFragment extends BaseFragment {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             window.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
-
         }
         return view;
     }

@@ -7,14 +7,14 @@ import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.quixom.apps.deviceinfo.R
 import com.quixom.apps.deviceinfo.adapters.SensorAdaptor
 import com.quixom.apps.deviceinfo.models.SensorDATA
@@ -109,7 +109,7 @@ class SensorCategoryFragment : BaseFragment() {
     private fun snackBarCustom(view: View, message: String) {
         val mSnackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
         val view: View? = mSnackBar.view
-        val mainTextView = mSnackBar.view.findViewById<View>(android.support.design.R.id.snackbar_text) as TextView
+        val mainTextView = mSnackBar.view.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             mainTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         else

@@ -14,7 +14,6 @@
         android:layout_gravity="center"
         airbnb:lottie_autoPlay="false"
         airbnb:lottie_fileName="deviceinfo_splash.json"
-        airbnb:lottie_cacheStrategy="strong"
         airbnb:lottie_enableMergePathsForKitKatAndAbove="true"
-        airbnb:lottie_loop="false"/>
+        airbnb:lottie_loop="true"/>
 </LinearLayout>

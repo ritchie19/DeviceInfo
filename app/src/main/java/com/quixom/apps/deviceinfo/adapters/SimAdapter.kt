@@ -1,10 +1,10 @@
 package com.quixom.apps.deviceinfo.adapters
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.quixom.apps.deviceinfo.MainActivity
 import com.quixom.apps.deviceinfo.R
 import com.quixom.apps.deviceinfo.models.SimInfo
@@ -15,14 +15,14 @@ import com.quixom.apps.deviceinfo.utilities.Methods
  */
 class SimAdapter(private val mainActivity: MainActivity, private var simInformationData: ArrayList<SimInfo>): RecyclerView.Adapter<SimAdapter.SimVH>(){
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SimVH {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimVH {
         val itemView = LayoutInflater.from(mainActivity).inflate(R.layout.row_sim_item, parent, false)
         return SimVH(itemView)
     }
 
     override fun getItemCount(): Int = simInformationData.size
 
-    override fun onBindViewHolder(holder: SimVH?, position: Int) {
+    override fun onBindViewHolder(holder: SimVH, position: Int) {
         holder?.bindData(simInformationData[position])
     }
 

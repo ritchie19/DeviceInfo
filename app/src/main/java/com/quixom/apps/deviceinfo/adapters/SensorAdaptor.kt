@@ -3,12 +3,12 @@ package com.quixom.apps.deviceinfo.adapters
 
 import android.graphics.Bitmap
 import android.hardware.Sensor
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.quixom.apps.deviceinfo.MainActivity
 import com.quixom.apps.deviceinfo.R
 import com.quixom.apps.deviceinfo.fragments.SensorDetailFragment
@@ -22,13 +22,12 @@ import java.io.ByteArrayOutputStream
  */
 
 class SensorAdaptor(internal var c: MainActivity, internal var sensorList: ArrayList<SensorDATA>) : RecyclerView.Adapter<SensorAdaptor.SensorVH>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SensorAdaptor.SensorVH? {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SensorVH {
         var v = LayoutInflater.from(c).inflate(R.layout.row_sensors, parent, false)
         return SensorVH(v)
     }
 
-    override fun onBindViewHolder(holder: SensorAdaptor.SensorVH?, position: Int) {
+    override fun onBindViewHolder(holder: SensorVH, position: Int) {
         holder?.bindData(sensorList[position], c)
     }
 
@@ -76,7 +75,7 @@ class SensorAdaptor(internal var c: MainActivity, internal var sensorList: Array
                 ivSensorImage?.setImageResource(R.drawable.ic_speedometer)
             }
 
-            itemView.setOnClickListener({
+            itemView.setOnClickListener {
                 Methods.avoidDoubleClicks(itemView)
 
                 val sensorDetailFragment = SensorDetailFragment()
@@ -86,9 +85,9 @@ class SensorAdaptor(internal var c: MainActivity, internal var sensorList: Array
                 val stream = ByteArrayOutputStream()
                 bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 val byteArray = stream.toByteArray()
-
-                c.fragmentUtil.addFragment(sensorDetailFragment.getInstance(sensorInfo.sensorName, sensorInfo.sensorType, byteArray), true, true)
-            })
+                val f = sensorDetailFragment.getInstance(sensorInfo.sensorName, sensorInfo.sensorType, byteArray)
+                c.fragmentUtil.addFragment(f, true, true)
+            }
         }
     }
 }

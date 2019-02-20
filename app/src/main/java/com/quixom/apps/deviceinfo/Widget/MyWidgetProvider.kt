@@ -103,7 +103,7 @@ class MyWidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        val appWidgetManager = AppWidgetManager.getInstance(context?.applicationContext)
+        val appWidgetManager = AppWidgetManager.getInstance(context.applicationContext)
         if (appWidgetManager != null) {
             updateAppWidget(context, appWidgetManager)
         }

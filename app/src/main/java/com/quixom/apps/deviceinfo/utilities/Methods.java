@@ -12,9 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.provider.FontRequest;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -41,6 +38,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 
 /**
@@ -212,7 +213,7 @@ public class Methods {
      * @param second: string
      * @return: string with two different color
      */
-    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static SpannableStringBuilder getSpannableString(Context context, String first, String second) {
 
         Typeface font1 = mActivity.getResources().getFont(R.font.lato_light);
@@ -239,7 +240,7 @@ public class Methods {
      *
      * @return: string with two different color
      */
-    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static SpannableStringBuilder getSpannableSensorText(Context context, String text) {
 
 

@@ -67,7 +67,6 @@
 
         <service android:name=".service.AppWidgetService" />
 
-
     </application>
 
 </manifest>

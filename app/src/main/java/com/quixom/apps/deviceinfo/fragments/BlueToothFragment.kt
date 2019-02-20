@@ -11,9 +11,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.view.*
+import androidx.core.content.ContextCompat
 import com.quixom.apps.deviceinfo.R
 import kotlinx.android.synthetic.main.fragment_blue_tooth.*
 import kotlinx.android.synthetic.main.toolbar_ui.*

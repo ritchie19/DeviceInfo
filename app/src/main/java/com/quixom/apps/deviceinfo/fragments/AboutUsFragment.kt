@@ -7,8 +7,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
-import android.support.v4.app.ActivityCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +15,14 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.RatingBar.OnRatingBarChangeListener
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import com.quixom.apps.deviceinfo.BuildConfig
 import com.quixom.apps.deviceinfo.R
 import com.quixom.apps.deviceinfo.utilities.KeyUtil
 import com.quixom.apps.deviceinfo.utilities.RateUsApp
+import java.io.FileInputStream
+import java.lang.Exception
 import java.util.*
 
 
@@ -106,18 +108,30 @@ class AboutUsFragment : BaseFragment(), View.OnClickListener {
 
     private fun callIntent() {
         val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mResources.getString(R.string.company_phone)))
-        startActivity(intent)
+        try {
+            startActivity(intent)
+        } catch (e : Exception) {
+            //could cause runtime exception
+        }
     }
 
     private fun mapIntent() {
         val uri = String.format(Locale.ENGLISH, "geo:%f,%f", 23.077309, 72.507228)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        context?.startActivity(intent)
+        try {
+            context?.startActivity(intent)
+        } catch (e : Exception) {
+            //could cause runtime exception
+        }
     }
 
     private fun webIntent() {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.quixom.com"))
-        startActivity(browserIntent)
+        try {
+            startActivity(browserIntent)
+        } catch (e : Exception) {
+            //could cause runtime exception
+        }
     }
 
     /**
